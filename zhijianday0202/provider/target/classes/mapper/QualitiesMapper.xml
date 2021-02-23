@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kgc.mapper.QualitiesMapper">
+    <!--根据产品id查询 质检结果-->
+<select id="getq" resultType="com.kgc.pojo.Qualities">
+     SELECT * FROM Qualities WHERE productid=#{productId}
+</select>
+    <!--修改质检结果-->
+    <update id="updateq" parameterType="com.kgc.pojo.Qualities">
+        UPDATE qualities
+        <set>
+            <if test="score!=null and score!=''">
+                score=#{score},
+            </if>
+            <if test="qualityDesc!=null and qualityDesc!=''">
+                qualityDesc=#{qualityDesc},
+            </if>
+            <if test="productId!=null and productId!=-1">
+            productId=#{productId},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+    <!--添加质检默认-->
+    <insert id="addq" parameterType="com.kgc.pojo.Qualities">
+    INSERT INTO qualities
+        VALUES(null,0,null,#{productId})
+    </insert>
+</mapper>  

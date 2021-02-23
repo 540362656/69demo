@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kgc.mapper.ProductsMapper">
+<select id="getCount" resultType="int">
+    SELECT COUNT(*)
+    FROM products left JOIN qualities
+    ON products.id=qualities.productId
+    <where>
+        <if test="productName!=null and productName!=''">
+            and productName like concat ('%',#{productName},'%')
+        </if>
+    </where>
+</select>
+<select id="getBypage" resultType="com.kgc.pojo.Products">
+    SELECT products.*,qualities.score
+    FROM products left JOIN qualities
+    ON products.id=qualities.productId
+    <where>
+        <if test="productName!=null and productName!=''">
+            and productName like concat ('%',#{productName},'%')
+        </if>
+    </where>
+    ORDER BY productDate DESC
+    LIMIT #{from},#{pageSize}
+</select>
+    <!--添加-->
+    <insert id="add" parameterType="com.kgc.pojo.Products">
+        INSERT INTO products VALUES(NULL,#{productName},#{productDate},#{productSum},#{productDesc},#{productPrice})
+    </insert>
+    <!--根据id查对象-->
+    <select id="selid" resultType="com.kgc.pojo.Products">
+        SELECT * FROM products WHERE id =#{id}
+    </select>
+    <!--修改-->
+    <update id="update" parameterType="com.kgc.pojo.Products">
+        UPDATE	products
+        <set>
+            <if test='productName!=null and productName!=""'>
+                productName=#{productName},
+            </if>
+            <if test='productDate!=null and productDate!=""'>
+                productDate=#{productDate},
+            </if>
+            <if test='productSum!=null and productSum!=""'>
+                productSum=#{productSum},
+            </if>
+            <if test='productDesc!=null and productDesc!=""'>
+                productDesc=#{productDesc},
+            </if>
+            <if test='productPrice!=null and productPrice!=""'>
+                productPrice=#{productPrice},
+            </if>
+        </set>
+        where id =#{id}
+    </update>
+    <delete id="del" parameterType="int">
+        DELETE FROM products  WHERE id=#{id}
+    </delete>
+
+    <!--查询所有产品-->
+    <select id="allProducts" resultType="com.kgc.pojo.Products">
+        select * from products
+    </select>
+    <!--获取产品最大id值-->
+    <select id="mixid" resultType="int">
+        SELECT MAX(id)
+        FROM products
+    </select>
+</mapper>  

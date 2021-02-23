@@ -1,0 +1,17 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: myconsumer
+  main:   #允许多个feign调用相同的服务接口
+    allow-bean-definition-overriding: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin:1@localhost:7001/eureka
+
+feign:
+  hystrix:
+    enabled: true   #启动熔断
