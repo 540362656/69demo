@@ -1,1 +1,10 @@
-sss: dd
+server:
+  port: 8005
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://root:root@localhost:7001/eureka
+  instance: #在注册中心显示IP地址
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
